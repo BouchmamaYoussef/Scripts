@@ -1,0 +1,36 @@
+#!/bin/bash
+#
+# Author: 0xY-oss
+# Date 30 نونبر, 2022 +01 12:33:55
+cowsay 0xY-oss
+echo -e "\n\t\t\t\tTwitter: @yoss1\n"
+
+find(){
+	echo  "[-] Finding : $1  "
+	curl https://crt.sh/\?q\=$1 -o 837465 2> /dev/null > /dev/null
+	cat 837465 | sed -r 's/<...?>//g'| awk '{print $1}' | sed 's/'$1'/'$1'\n/Ig' | sort -u | grep $1 > $1_.txt
+	rm 837465 2> /dev/null
+	cat $1_.txt |sed 's/^'$1'//g' | sed  's/*.'$1'//g' | sed '/^$/d' > $1.txt
+	cat $1.txt | sort -u | grep -v "*.$1"
+	rm $1.txt $1_.txt
+	echo "[-] Done!"
+}
+
+
+if [[ $1 == "-d" ]]
+then
+	find $2
+	exit 1;
+elif [[ $1 == "-l" ]]
+then
+	while read domain
+	do
+	find $domain
+	done < $2
+else
+	echo -e "\n\tUsage: subcrt -d domain.com"
+	echo -e "\tOr   : subcrt -l list_of_domains.txt\n"
+	exit 1;
+fi
+
+find . -type f -empty  -delete
