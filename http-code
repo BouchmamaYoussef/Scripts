@@ -1,0 +1,3 @@
+#!/bin/bash
+echo  ""
+cat $1 | while read line;do curl $line -I -s -w ' [%{http_code}] %{url}\t\t%{redirect_url}\n' -o /dev/null;done | expand --tabs=20
